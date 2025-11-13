@@ -1,14 +1,14 @@
-# Use an official OpenJDK runtime as the base image (Apple Silicon ke liye ARM64 bhi specify karein)
-FROM --platform=linux/arm64 openjdk:11
+# Apple Silicon (ARM64) Friendly Java 11 Image
+FROM --platform=linux/arm64 openjdk:11-jdk-slim
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
-# Copy the Spring Boot application JAR file into the container
-COPY ./target/springboottest-0.0.1-SNAPSHOT.jar springboottest-0.0.1-SNAPSHOT.jar
+# Copy jar
+COPY ./target/springboottest-0.0.1-SNAPSHOT.jar app.jar
 
-# Expose port 8084
+# Expose port
 EXPOSE 8084
 
-# Define the command to run your Spring Boot application
-CMD ["java", "-jar", "springboottest-0.0.1-SNAPSHOT.jar"]
+# Run Spring Boot app and ensure it listens on all interfaces
+ENTRYPOINT ["java", "-jar", "app.jar", "--server.address=0.0.0.0"]
