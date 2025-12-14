@@ -1,14 +1,9 @@
-# Apple Silicon (ARM64) Friendly Java 11 Image
-FROM --platform=linux/arm64 openjdk:11-jdk-slim
+FROM eclipse-temurin:11-jre
 
-# Set working directory
 WORKDIR /app
 
-# Copy jar
-COPY ./target/springboottest-0.0.1-SNAPSHOT.jar app.jar
+COPY target/springboottest-0.0.1-SNAPSHOT.jar app.jar
 
-# Expose port
 EXPOSE 8084
 
-# Run Spring Boot app and ensure it listens on all interfaces
-ENTRYPOINT ["java", "-jar", "app.jar", "--server.address=0.0.0.0"]
+ENTRYPOINT ["java","-jar","app.jar","--server.port=8084"]
