@@ -7,8 +7,12 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: ors10
-      MYSQL_USER: orsuser
-      MYSQL_PASSWORD: orspass
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root@123
+      ports:
+      - "3308:3306"
+    networks:
+      - ors_network
       TZ: Asia/Kolkata
     volumes:
       - mysql_data:/var/lib/mysql
