@@ -136,7 +136,7 @@ public class UserCtl extends BaseCtl<UserForm, UserDTO, UserServiceInt> {
 	 */
 	@PostMapping("changepassword")
 	public ORSResponse changePassword(@RequestBody @Valid ChangePasswordForm form, BindingResult bindingResult) {
-		System.out.println("Inside changepassword in userctl......vipin");
+		System.out.println("Inside changepassword in userctl......sushobhit");
 
 		
 		ORSResponse res = validate(bindingResult);
