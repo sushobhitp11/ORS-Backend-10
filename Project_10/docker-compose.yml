@@ -9,11 +9,9 @@ services:
       MYSQL_DATABASE: ors10
       MYSQL_USER: root
       MYSQL_PASSWORD: root@123
-      ports:
-      - "3308:3306"
-    networks:
-      - ors_network
       TZ: Asia/Kolkata
+    ports:
+      - "3308:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
@@ -21,11 +19,13 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - ors_network
 
   backend:
     build:
-      context: .              # ✅ Project_10 folder
-      dockerfile: dockerfile  # ✅ same folder ka Dockerfile
+      context: .
+      dockerfile: dockerfile
     container_name: ors-backend
     restart: always
     depends_on:
@@ -33,6 +33,12 @@ services:
         condition: service_healthy
     ports:
       - "8084:8084"
+    networks:
+      - ors_network
 
 volumes:
   mysql_data:
+
+networks:
+  ors_network:
+    driver: bridge
