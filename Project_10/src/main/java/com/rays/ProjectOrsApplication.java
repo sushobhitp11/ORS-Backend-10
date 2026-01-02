@@ -36,6 +36,7 @@ public class ProjectOrsApplication extends SpringBootServletInitializer {
 	 * Enables CORS to all urls (cross origin resource sharing)
 	 * 
 	 * @return
+	 *
 	 */
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
@@ -46,7 +47,7 @@ public class ProjectOrsApplication extends SpringBootServletInitializer {
 			 * Add CORS
 			 * 
 			 */
-
+			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				CorsRegistration cors = registry.addMapping("/**");
 				cors.allowedOrigins("http://localhost:4200");
