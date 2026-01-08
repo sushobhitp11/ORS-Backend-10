@@ -8,6 +8,8 @@ import javax.persistence.Table;
 
 import com.rays.common.BaseDTO;
 
+//CustomerDTO 
+
 @Entity
 @Table(name = "ST_CUSTOMER")
 public class CustomerDTO extends BaseDTO {
@@ -98,5 +100,6 @@ public class CustomerDTO extends BaseDTO {
 		map.put("clientName", clientName);
 		return map;
 	}
+
 
 }
