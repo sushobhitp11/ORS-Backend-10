@@ -1,9 +1,11 @@
 package com.rays.ctl;
 
 import java.util.Enumeration;
+
 import java.util.LinkedHashSet;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -81,7 +83,8 @@ public class LoginCtl extends BaseCtl<UserForm, UserDTO, UserServiceInt> {
 	public ORSResponse login(@RequestBody @Valid LoginForm form,
 	        BindingResult bindingResult,
 	        HttpSession session,
-	        HttpServletRequest request) {
+	        HttpServletRequest request,HttpServletResponse response
+) {
 
 	    System.out.println("loginCtl ki login API ko hit kiya");
 
@@ -118,7 +121,8 @@ public class LoginCtl extends BaseCtl<UserForm, UserDTO, UserServiceInt> {
 
 	        final String token = jwtUtil.generateToken(dto.getLoginId());
 	        res.addResult("token", token);
-
+            
+	        response.setStatus(HttpServletResponse.SC_OK); // 200
 	        return res;
 
 	    } catch (Exception e) {
@@ -126,9 +130,11 @@ public class LoginCtl extends BaseCtl<UserForm, UserDTO, UserServiceInt> {
 	        e.printStackTrace(); // backend log ke liye
 
 	        res.setSuccess(false);
-	        res.addMessage("Server is down. Please try again later.");
-
+	        res.addMessage("Internal Server is down. Please try again later.");
+	        
+	        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500
 	        return res;
+
 	    }
 	}
 
