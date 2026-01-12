@@ -78,51 +78,25 @@ public class JasperCtl extends BaseCtl<MarksheetForm, MarksheetDTO, MarksheetSer
 	 * @throws SQLException the SQL exception
 	 * @throws IOException  Signals that an I/O exception has occurred.
 	 */
-	@GetMapping(value = "report", produces = MediaType.APPLICATION_PDF_VALUE)
-	public void display(HttpServletResponse response) throws Exception {
+	@GetMapping(value = "/report", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public void display(HttpServletRequest request, HttpServletResponse response)
+			throws JRException, SQLException, IOException {
+		System.out.println("********************** Jasper Ctl*********************");
+		ORSResponse res = new ORSResponse(true);
+		String path = context.getRealPath("/src/main/resources/report/ORS10.jasper");
 
-	    System.out.println("******** Jasper Controller ********");
-
-	    ResourceBundle rb = ResourceBundle.getBundle("application");
-
-	    // ✅ Load jasper from classpath
-	    InputStream is = getClass()
-	            .getResourceAsStream(rb.getString("jasper"));
-
-	    if (is == null) {
-	        throw new RuntimeException("Jasper file not found in resources");
-	    }
-
-	    JasperReport jasperReport =
-	            (JasperReport) JRLoader.loadObject(is);
-
-	    this.sessionFactory =
-	            entityManager.getEntityManagerFactory()
-	                    .unwrap(SessionFactory.class);
-
-	    Connection con = sessionFactory
-	            .getSessionFactoryOptions()
-	            .getServiceRegistry()
-	            .getService(ConnectionProvider.class)
-	            .getConnection();
-
-	    Map<String, Object> map = new HashMap<>();
-
-	    JasperPrint jasperPrint =
-	            JasperFillManager.fillReport(jasperReport, map, con);
-
-	    byte[] pdf =
-	            JasperExportManager.exportReportToPdf(jasperPrint);
-
-	    response.setContentType("application/pdf");
-	    response.setHeader("Content-Disposition", "inline; filename=ORS10.pdf");
-	    response.getOutputStream().write(pdf);
-	    response.getOutputStream().flush();
-
-	    System.out.println("******** Jasper Printed ********");
+		Connection con = null;
+		JasperReport jasperReport = JasperCompileManager.compileReport(path);
+		Map<String, Object> map = new HashMap<String, Object>();
+		this.sessionFactory = entityManager.getEntityManagerFactory().unwrap(SessionFactory.class);
+		con = sessionFactory.getSessionFactoryOptions().getServiceRegistry().getService(ConnectionProvider.class)
+				.getConnection();
+		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, con);
+		byte[] pdf = JasperExportManager.exportReportToPdf(jasperPrint);
+		response.setContentType("application/pdf");
+		response.getOutputStream().write(pdf);
+		response.getOutputStream().flush();
+		System.out.println("Thanks");
+		// return MediaType.APPLICATION_JSON_VALUE;
 	}
-
-	
-	
-
 }
