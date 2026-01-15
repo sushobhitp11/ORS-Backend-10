@@ -86,14 +86,14 @@ public class JasperCtl extends BaseCtl<MarksheetForm, MarksheetDTO, MarksheetSer
 	    System.out.println("********************** Jasper Ctl *********************");
 
 	    InputStream reportStream =
-	        getClass().getResourceAsStream("/report/ORS10.jasper");
+	        getClass().getResourceAsStream("/report/ORS10.jrxml");
 
 	    if (reportStream == null) {
 	        throw new FileNotFoundException("ORS10.jasper not found in classpath");
 	    }
 
 	    JasperReport jasperReport =
-	            (JasperReport) JRLoader.loadObject(reportStream);
+	            JasperCompileManager.compileReport(reportStream);
 
 	    this.sessionFactory = entityManager.getEntityManagerFactory()
 	            .unwrap(SessionFactory.class);
