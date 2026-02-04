@@ -1,6 +1,8 @@
 package com.rays.common;
 
 import org.springframework.dao.DataAccessResourceFailureException;
+import org.hibernate.exception.JDBCConnectionException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.CannotCreateTransactionException;
@@ -21,7 +23,8 @@ public class ApplicationExceptionHandlerCtl {
     // All database related problems
     @ExceptionHandler({
         CannotCreateTransactionException.class,
-        DataAccessResourceFailureException.class
+        DataAccessResourceFailureException.class,
+        JDBCConnectionException.class
     })
     public ResponseEntity<ORSResponse> handleDatabaseException(Exception e) {
 
